@@ -1,5 +1,5 @@
 <?Php 
-	
+	session_start();
 	include('db.php');
 
 	// print_r($_POST); 
@@ -9,12 +9,14 @@
 	$amountCoins = $_POST['amount_coins'];
 	$totalValue = $_POST['total_value'];
 	
-	$addCoin = "INSERT INTO cryptofolio (id, name, price, amount, totalValue, bought_on) 
-			VALUES (null, '$coinName', '$coinPrice', '$amountCoins', '$totalValue', NOW())";
+	$userId = $_SESSION['userId'];
+	
+	$addCoin = "INSERT INTO cryptofolio (id, name, price, amount, totalValue, bought_on, userId) 
+			VALUES (null, '$coinName', '$coinPrice', '$amountCoins', '$totalValue', NOW(), '$userId')";
 
 	if( mysqli_query($con, $addCoin) )
 	{
-		echo "Succesfully added to your cryptofolio";
+		echo "succes";
 	}
 	else
 	{

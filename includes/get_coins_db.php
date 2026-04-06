@@ -1,10 +1,10 @@
 <?Php 
-	
+	session_start();
 	header('Content-Type: application/json');
 
 	include('db.php');
 
-	$getAllCoins = "SELECT * FROM cryptofolio";
+	$getAllCoins = "SELECT * FROM cryptofolio WHERE userId =" . $_SESSION['userId'];
 
 	$resultGetAllCoins = mysqli_query($con, $getAllCoins);
 
@@ -15,8 +15,6 @@
 		$allCoinsArray[] = $rowAllCoins;
 	}
 	
-	
 	echo json_encode($allCoinsArray);
-		 
 
 ?>

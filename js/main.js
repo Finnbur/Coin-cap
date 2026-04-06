@@ -1,4 +1,3 @@
-//example API (Docs): https://pro.coincap.io/api-docs
 //get all coins
 function getAllCoins() {
 
@@ -14,6 +13,16 @@ function getAllCoins() {
 
 			$.each(coins.data, function (index, value) {
 				value.symbolLow = value.symbol.toLowerCase();
+
+				// format price
+				value.priceUsd = Number(value.priceUsd).toFixed(2);
+
+				// format percentage
+				value.changePercent24Hr = Number(value.changePercent24Hr).toFixed(2);
+				
+				// if number in - red else green
+				let change = Number(value.changePercent24Hr);
+				value.changeClass = change < 0 ? "text-danger" : "text-success";
 			});
 
             //get Template
@@ -22,12 +31,16 @@ function getAllCoins() {
             //Render output with Mustache (template, data)
             var renderTemplate = Mustache.render(coinTemplate, coins);
 
-            //Add the data to your HTML
+            //Add the data to HTML
             $("#coins-table tbody").append(renderTemplate);
+
+			//after everything loaded
+			$("#preloader").fadeOut(500, function () {
+				$(this).remove();
+			});
 		}
 	});
 }
-
 
 //function to get a single coin
 function getCoin(selectedButton) {
@@ -41,7 +54,7 @@ function getCoin(selectedButton) {
         success: function (allCoinsData) {
             coins = allCoinsData.data;
 
-            //get Template
+            //Get Template
             var modalTemplate = $("#js-modal-template").html();
 
             //Render output with Mustache (template, data)
@@ -50,12 +63,70 @@ function getCoin(selectedButton) {
             //Add the data to your HTML
             $("#exampleModal .modal-content").html(renderTemplate);
 
-            // $("#modal-title").empty().append(coins.data.name)
-            // $("#modal-body").empty().append("Supply: "+ coins.data.supply)
+			//Use bigger modal
+			$("#exampleModal .modal-dialog").addClass("modal-lg");
+
+			//Generate chart
+			getChartInfo();
         }
     })
+}
 
-    getChartInfo();
+function getAddCoin(selectedButton) {
+    coin = $(selectedButton).attr("id");
+
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "https://rest.coincap.io/v3/assets/"+ coin +"/?apiKey=<YOUR API KEY HERE>",
+
+        success: function (allCoinsData) {
+            coins = allCoinsData.data;
+
+            //Get Template
+            var modalTemplate = $("#js-modal-coinAdd").html();
+
+            //Render output with Mustache (template, data)
+            var renderTemplate = Mustache.render(modalTemplate, coins);
+
+            //Add the data to your HTML
+            $("#exampleModal .modal-content").html(renderTemplate);
+
+			//Use smaller modal
+			$("#exampleModal .modal-dialog").removeClass("modal-lg");
+
+			//Get right cost
+			calculateTotal();
+        }
+    })
+}
+
+function addCoin() {
+	var coinName = $("#coin-name").text();
+	var coinPrice = $("#coin-price").text();
+	var coinAmount = $("#coin-amount").val();
+	var totalValue = $("#total-value").text();
+
+	$.ajax({
+		type: "POST",
+		url: "includes/add_coins_db.php",
+		data: {
+			coin_name: coinName,
+			coin_price: coinPrice,
+			amount_coins: coinAmount,
+			total_value: totalValue,
+		},
+
+		success: function (data) {
+			// console.log(data);
+
+			if(data == "succes") {
+				alert("Added coin to portfolio!")
+			} else {
+				alert("Something went wrong!")
+			}
+		}
+	})
 }
 
 function getChartInfo() {
@@ -122,14 +193,34 @@ function generateChart(chartDate, chartPrice) {
 	});
 }
 
+function calculateTotal() {
+	var coinPrice = $("#coin-price").text();
+	var coinAmount = $("#coin-amount").val();
+	var totalPrice = coinPrice * coinAmount;
+
+	$("#total-value").text(totalPrice);
+
+}
+
 $(document).ready(function () {
 	//load all coins @ loading
 	getAllCoins();
 
 	//On click to get a single coin
-	$("#coins-table").on("click", ".coin-info-btn", function () {
+	$("#coins-table").on("click", ".coin-info-btn-modal", function () {
 		getCoin(this);
 	});
+
+	//On click to get modal of adding coin
+	$("#coins-table").on("click", ".coin-add-btn-modal", function () {
+		getAddCoin(this);
+	});
+
+	$(document).on("click", ".coin-add-btn", function () {
+		addCoin();
+	});
+
+	$(document).on("input change", "#coin-amount", function () {
+        calculateTotal();
+    });
 });
-
-
