@@ -1,43 +1,54 @@
 //get all coins
 function getAllCoins() {
-
 	$.ajax({
 		type: "GET",
 		dataType: "json",
-		url: "https://rest.coincap.io/v3/assets?apiKey=<YOUR API KEY HERE>",
+		url: "https://rest.coincap.io/v3/assets",
 
 		success: function (allCoinsData) {
 			coins = allCoinsData;
 
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: "https://rest.coincap.io/v3/rates/euro",
+
+				success: function (euroData) { 
+					$.each(coins.data, function (index, value) {
+						value.symbolLow = value.symbol.toLowerCase();
+
+						// format price
+						value.priceUsd = Number(value.priceUsd).toFixed(2);
+
+						value.priceEur = (value.priceUsd / euroData.data.rateUsd).toFixed(2);
+
+						// format percentage
+						value.changePercent24Hr = Number(value.changePercent24Hr).toFixed(2);
+						
+						// if number in - red else green
+						let change = Number(value.changePercent24Hr);
+						value.changeClass = change < 0 ? "text-danger" : "text-success";
+					});
+
+					//get Template
+					var coinTemplate = $("#js-coin-template").html();
+
+					//Render output with Mustache (template, data)
+					var renderTemplate = Mustache.render(coinTemplate, coins);
+
+					//Add the data to HTML
+					$("#coins-table tbody").append(renderTemplate);
+
+					//after everything loaded
+					$("#preloader").fadeOut(500, function () {
+						$(this).remove();
+					});
+				}
+			});
+
             console.log(coins.data);
 
-			$.each(coins.data, function (index, value) {
-				value.symbolLow = value.symbol.toLowerCase();
-
-				// format price
-				value.priceUsd = Number(value.priceUsd).toFixed(2);
-
-				// format percentage
-				value.changePercent24Hr = Number(value.changePercent24Hr).toFixed(2);
-				
-				// if number in - red else green
-				let change = Number(value.changePercent24Hr);
-				value.changeClass = change < 0 ? "text-danger" : "text-success";
-			});
-
-            //get Template
-            var coinTemplate = $("#js-coin-template").html();
-
-            //Render output with Mustache (template, data)
-            var renderTemplate = Mustache.render(coinTemplate, coins);
-
-            //Add the data to HTML
-            $("#coins-table tbody").append(renderTemplate);
-
-			//after everything loaded
-			$("#preloader").fadeOut(500, function () {
-				$(this).remove();
-			});
+			
 		}
 	});
 }
@@ -49,7 +60,7 @@ function getCoin(selectedButton) {
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: "https://rest.coincap.io/v3/assets/"+ coin +"/?apiKey=<YOUR API KEY HERE>",
+        url: "https://rest.coincap.io/v3/assets/"+ coin +"/",
 
         success: function (allCoinsData) {
             coins = allCoinsData.data;

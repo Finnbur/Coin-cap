@@ -25,6 +25,7 @@ session_start()
 					<th>ID</th>
 					<th>symbol</th>
 					<th>Price USD</th>
+					<th>Price EUR</th>
 					<th>%24hr</th>
 					<th>More info</th>
 					<?php if(isset($_SESSION['loggedIn'])) { ?>
@@ -43,7 +44,8 @@ session_start()
 				<td><img src="https://static.coincap.io/assets/icons/{{symbolLow}}@2x.png" height="30px" width="30px">  {{id}}</td>
 				<td>{{symbol}}</td>
 				<td>${{priceUsd}}</td>
-				<td class="{{changeClass}}">{{changePercent24Hr}}</td>
+				<td>€{{priceEur}}</td>
+				<td class="{{changeClass}}">{{changePercent24Hr}}%</td>
 				<td><button data-bs-toggle='modal' data-bs-target='#exampleModal' type='button' id='{{id}}' class='btn btn-primary coin-info-btn-modal'>More info</button></td>
 				<?php if(isset($_SESSION['loggedIn'])) { ?>
 				<td><button data-bs-toggle='modal' data-bs-target='#exampleModal' type='button' id='{{id}}' class='btn btn-primary coin-add-btn-modal'>Add to wallet</button></td>
