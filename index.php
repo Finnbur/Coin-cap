@@ -13,46 +13,57 @@ session_start()
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
+	<?php include 'includes/nav.php'; ?>
 
 	<div class="container">
-		<?php include 'includes/nav.php'; ?>
 
 		<image src="images/spin_wheel.gif" id="preloader" class="d-block mx-auto my-5" height="600" width="600" alt="Loading...">
 
-		<table class="table" id="coins-table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>symbol</th>
-					<th>Price USD</th>
-					<th>Price EUR</th>
-					<th>%24hr</th>
-					<th>More info</th>
-					<?php if(isset($_SESSION['loggedIn'])) { ?>
-					<th>Add to Wallet</th>
-					<?php } ?>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+		<div class="container my-4">
+			<div class="table-responsive shadow-sm rounded-3 overflow-hidden">
+				<table class="table table-striped table-hover align-middle mb-0" id="coins-table">
+					<thead class="table-secondary">
+						<tr>
+							<th class="text-nowrap">ID</th>
+							<th class="text-nowrap">Symbol</th>
+							<th class="text-nowrap">Price USD</th>
+							<th class="text-nowrap">Price EUR</th>
+							<th class="text-nowrap">%24hr</th>
+							<th class="text-nowrap">More info</th>
+							<?php if(isset($_SESSION['loggedIn'])) { ?>
+								<th class="text-nowrap">Add to Wallet</th>
+							<?php } ?>
+						</tr>
+					</thead>
+					<tbody class="bg-white"></tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 
-	<template id="js-coin-template">
-		{{#data}}
-			<tr>
-				<td><img src="https://static.coincap.io/assets/icons/{{symbolLow}}@2x.png" height="30px" width="30px">  {{id}}</td>
-				<td>{{symbol}}</td>
-				<td>${{priceUsd}}</td>
-				<td>€{{priceEur}}</td>
-				<td class="{{changeClass}}">{{changePercent24Hr}}%</td>
-				<td><button data-bs-toggle='modal' data-bs-target='#exampleModal' type='button' id='{{id}}' class='btn btn-primary coin-info-btn-modal'>More info</button></td>
-				<?php if(isset($_SESSION['loggedIn'])) { ?>
-				<td><button data-bs-toggle='modal' data-bs-target='#exampleModal' type='button' id='{{id}}' class='btn btn-primary coin-add-btn-modal'>Add to wallet</button></td>
-				<?php } ?>
-			</tr>
-		{{/data}}
-	</template>
+<template id="js-coin-template">
+    {{#data}}
+        <tr>
+            <td class="fw-semibold"><img src="https://static.coincap.io/assets/icons/{{symbolLow}}@2x.png" height="30" width="30" class="me-2" alt="{{symbol}}">{{id}}</td>
+            <td class="text-uppercase">{{symbol}}</td>
+            <td>${{priceUsd}}</td>
+            <td>€{{priceEur}}</td>
+            <td class="{{changeClass}} fw-semibold">{{changePercent24Hr}}%</td>
+            <td>
+                <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" id="{{id}}" class="btn btn-primary btn-sm coin-info-btn-modal">
+                    More info
+                </button>
+            </td>
+            <?php if(isset($_SESSION['loggedIn'])) { ?>
+                <td>
+                    <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" id="{{id}}" class="btn btn-success btn-sm coin-add-btn-modal">
+                        Add to wallet
+                    </button>
+                </td>
+            <?php } ?>
+        </tr>
+    {{/data}}
+</template>
 
 	<!-- modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -85,7 +96,7 @@ session_start()
 						</div>
 						<div class="col-6 mb-3">
 							<h5>Volume</h5>
-							<p>{{volumeUsd24Hr}}</p>
+							<p>${{volumeUsd24Hr}}</p>
 						</div>
 					</div>
 

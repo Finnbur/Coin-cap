@@ -18,52 +18,60 @@ if(!isset($_SESSION['loggedIn'])) {
 
 </head>
 <body>
+	<?php include 'includes/nav.php'; ?>
 
 	<div class="container">
-		<?php include 'includes/nav.php'; ?>
 
-		<table class="table" id="crypto-folio-table">
-			<thead>
-				<tr>
-					<th>Bought on</th>
-					<th>Name</th>
-					<th>Price now</th>
-					<th>Price when bought</th>
-					<th>Amount</th>
-					<th>Total</th>
-					<th>Save</th>
-					<th>Delete</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td id="total-value"></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</tfoot>
-		</table>
+		<div class="container my-4">
+			<div class="table-responsive shadow rounded-3 overflow-hidden">
+				<table class="table table-striped table-hover align-middle mb-0" id="crypto-folio-table">
+					<thead class="table-secondary">
+						<tr>
+							<th class="text-nowrap">Bought on</th>
+							<th class="text-nowrap">Name</th>
+							<th class="text-nowrap">Price now</th>
+							<th class="text-nowrap">Price when bought</th>
+							<th class="text-nowrap">Amount</th>
+							<th class="text-nowrap">Total</th>
+							<th class="text-nowrap text-center">Save</th>
+							<th class="text-nowrap text-center">Delete</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white"></tbody>
+					<tfoot class="table-light">
+						<tr class="fw-bold">
+							<td colspan="5" class="text-end">Portfolio Total:</td>
+							<td id="total-value" class="text-success"></td>
+							<td colspan="2"></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+
 	</div>
 
 	<template id="coins-cryptofolio-template">
 		{{#.}}
 			<tr>
-				<td>{{bought_on}}</td>
-				<td>{{name}}</td>
-				<td>${{priceUsd}}</td>
+				<td class="text-muted small">{{bought_on}}</td>
+				<td class="fw-semibold">{{name}}</td>
+				<td class="fw-semibold">${{priceUsd}}</td>
 				<td class="coin-price {{changeClass}}">${{price}}</td>
-				<td><input type="number" value="{{amount}}" class="coin-amount" min="1" /></td>
-				<td>${{totalValue}}</td>
-				<td><button type="button" class="btn btn-warning save-coin-btn" value="{{id}}">Save</button></td>
-				<td><button type="button" class="btn btn-danger delete-coin-btn" value="{{id}}">Delete</button></td>
+				<td style="max-width: 100px;">
+					<input type="number" value="{{amount}}" class="form-control form-control-sm coin-amount" min="1">
+				</td>
+				<td class="fw-bold">${{totalValue}}</td>
+				<td class="text-center">
+					<button type="button" class="btn btn-warning btn-sm save-coin-btn" value="{{id}}">
+						Save
+					</button>
+				</td>
+				<td class="text-center">
+					<button type="button" class="btn btn-danger btn-sm delete-coin-btn" value="{{id}}">
+						Delete
+					</button>
+				</td>
 			</tr>
 		{{/.}}
 	</template>

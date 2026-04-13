@@ -18,9 +18,9 @@ if(isset($_SESSION['loggedIn'])) {
 
 </head>
 <body>
+    <?php include 'includes/nav.php'; ?>
 
 	<div class="container">
-		<?php include 'includes/nav.php'; ?>
         
         <div class="row justify-content-center mt-5">
             <div class="col-md-6 col-lg-4">
