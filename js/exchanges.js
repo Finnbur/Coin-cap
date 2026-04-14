@@ -4,7 +4,7 @@ function getAllCoins() {
 	$.ajax({
 		type: "GET",
 		dataType: "json",
-		url: "https://rest.coincap.io/v3/assets",
+		url: "https://rest.coincap.io/v3/exchanges",
 
 		success: function (allCoinsData) {
 			coins = allCoinsData;
@@ -18,7 +18,7 @@ function getAllCoins() {
             var renderTemplate = Mustache.render(coinTemplate, coins);
 
             //Add the data to HTML
-            $("#coins-table .row").append(renderTemplate);
+            $("#coins-exchanges .row").append(renderTemplate);
 
 			//after everything loaded
 			$("#preloader").fadeOut(500, function () {

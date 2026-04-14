@@ -19,7 +19,7 @@ session_start()
 		<image src="images/spin_wheel.gif" id="preloader" class="d-block mx-auto my-5" height="600" width="600" alt="Loading...">
         
 		<div class="container my-4">
-            <div id="coins-table">
+            <div id="coins-exchanges">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"></div>
             </div>
         </div>
@@ -30,11 +30,11 @@ session_start()
         <div class="col">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-text">{{rank}}. {{name}} ({{symbol}})</h5>
-                    <p class="card-text">Volume: ${{volumeUsd24Hr}}</p>
+                    <h5 class="card-text">{{rank}}. {{name}}</h5>
+                    <p class="card-text">Volume: ${{volumeUsd}}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <a href="{{explorer}}" class="btn btn-primary">Website</a>
+                            <a href="{{exchangeUrl}}" class="btn btn-primary">Website</a>
                         </div>
                     </div>
                 </div>

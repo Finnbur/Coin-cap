@@ -13,7 +13,7 @@ function getAllCoinsPortfolio() {
                 // Prepare an AJAX request for each coin to get real-time price
                 let request = $.ajax({
                     type: "GET",
-					url: "https://rest.coincap.io/v3/assets/"+ coin.name +"/?apiKey=<YOUR API KEY HERE>",
+					url: "https://rest.coincap.io/v3/assets/"+ coin.name +"/",
                     dataType: "json",
                     success: function (coinData) {
                         // Merge real-time price into your DB coin data

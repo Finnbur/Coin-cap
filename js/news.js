@@ -3,7 +3,7 @@ function getAllNews() {
     $.ajax({
         type: "GET",
         dataType: "json",
-        url: "includes/proxy-news.php",
+        url: "https://api.thenewsapi.net/crypto?apikey=A5C85310A30961F16DA8F627DA6C9F0E&page=1&size=10",
         
         success: function (response) {
             console.log(response.data);

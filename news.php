@@ -26,10 +26,10 @@ session_start()
     </div>
 
 <template id="js-news-template">
-    {{#data}}
+    {{#data.results}}
     <div class="col">
         <div class="card shadow-sm h-100">
-        <img width="100%" height="250" src="{{image_url}}">
+        <img width="100%" height="250" src="{{thumbnail}}">
             <div class="card-body">
                 <h5 class="card-title">{{title}}</h5>
                 <p class="card-text text-muted" style="font-size: 0.9rem;">
@@ -43,7 +43,7 @@ session_start()
             </div>
         </div>
     </div>
-    {{/data}}
+    {{/data.results}}
 </template>
 
 
